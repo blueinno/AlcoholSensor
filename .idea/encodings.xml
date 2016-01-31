@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/blueino/android/unist/bluetooth/BluetoothHelper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/blueino/android/unist/bluetooth/EditData.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/blueino/android/unist/bluetooth/HexAsciiHelper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/blueino/android/unist/bluetooth/RFduinoService.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/blueino/android/unist/fragment/DevicesFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/blueino/android/unist/fragment/GraphFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/blueino/android/unist/fragment/SettingsFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/blueino/android/unist/fragment/TerminalFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/alcohol.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/drawer_shadow.9.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_drawer.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/menu.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/menu2.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ui_logo.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/shape_circle.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_devices.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_graph.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_navigation_drawer.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_settings.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_terminal.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/menu/global.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/menu/main.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/xml" charset="UTF-8" />
+  </component>
+</project>
