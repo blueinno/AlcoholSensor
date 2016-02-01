@@ -112,10 +112,9 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/connect_button"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="bottom"
+        android:layout_height="wrap_content"
         android:background="#001c54"
-        android:text="Scan"
+        android:text="CONNECT TO DEVICES"
         android:textColor="#FFFFFF" />
 
 <!--    android:text="Connect to device"-->

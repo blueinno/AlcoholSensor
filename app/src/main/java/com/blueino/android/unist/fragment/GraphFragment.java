@@ -19,36 +19,20 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Random;
 
-public class GraphFragment extends Fragment {
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+public class GraphFragment extends BaseFragment {
 
     private View myFragmentView;
     private GraphView graph;
-    private static GraphFragment fragment;
 
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
     private int lastX = 0;
 
-    public static GraphFragment newInstance(String param1, String param2) {
-        fragment = new GraphFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public boolean isGraphOpen(){
-        return myFragmentView != null && this.isVisible();
-    }
+    private Viewport viewport;
 
     public GraphFragment() {
     }
@@ -64,8 +48,7 @@ public class GraphFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -76,7 +59,26 @@ public class GraphFragment extends Fragment {
         return myFragmentView;
     }
 
-//  ===========================================================================================
+    @Override
+    public void update(final byte[] data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if( getActivity() != null ) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Float f = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).getFloat();
+//                            String temp = String.format("%", d);
+                            addEntry( f );
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    //  ===========================================================================================
 
     private void initialize() {
         createChildren();
@@ -88,13 +90,13 @@ public class GraphFragment extends Fragment {
         series = new LineGraphSeries<DataPoint>();
         graph.addSeries(series);
         // customize a little bit viewport
-        Viewport viewport = graph.getViewport();
+        viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
+        viewport.setScrollable(true);
         viewport.setMinY(0);
-        viewport.setMaxY(100);
-        viewport.setScrollable(false);
+        viewport.setMaxY(1000);
 
-        draw();
+//        draw();
     }
 
     private void draw() {
@@ -106,7 +108,7 @@ public class GraphFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                addEntry();
+//                                addEntry();
                             }
                         });
 
@@ -121,8 +123,8 @@ public class GraphFragment extends Fragment {
         }).start();
     }
 
-    private void addEntry() {
-        series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), true, 10);
+    private void addEntry(double value) {
+        series.appendData(new DataPoint(lastX++, value), true, 10);
     }
 
     private int getColor(int ctr){

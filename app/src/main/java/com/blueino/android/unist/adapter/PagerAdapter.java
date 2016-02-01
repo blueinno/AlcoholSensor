@@ -1,36 +1,59 @@
 package com.blueino.android.unist.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
-import com.blueino.android.unist.fragment.DevicesFragment;
+import com.blueino.android.unist.R;
 
-import com.blueino.android.unist.fragment.GraphFragment;
-import com.blueino.android.unist.fragment.SettingsFragment;
-import com.blueino.android.unist.fragment.TerminalFragment;
+import java.util.ArrayList;
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
+public class PagerAdapter extends FragmentPagerAdapter {
 
-    public PagerAdapter(FragmentManager fm) {
+    public static int pos = 0;
+
+    private Context mContext;
+    private ArrayList<Fragment> fragments;
+
+    public PagerAdapter(Context context, FragmentManager fm, ArrayList<Fragment> fragments) {
         super(fm);
+        mContext = context;
+        this.fragments = fragments;
     }
 
     @Override
     public Fragment getItem(int position) {
-        if( position == 0 ) return DevicesFragment.newInstance("1,", "2");
-        if( position == 1 ) return SettingsFragment.newInstance("1,", "2");
-        if( position == 2 ) return GraphFragment.newInstance("1,", "2");
-        return TerminalFragment.newInstance("1,", "2");
+        return fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return 5;
+        return fragments.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Devices";
+        setPos(position);
+
+        String PageTitle = "";
+
+        switch(pos) {
+            case 0: PageTitle = mContext.getString(R.string.title_section1);    break;
+            case 1: PageTitle = mContext.getString(R.string.title_section2);    break;
+            case 2: PageTitle = mContext.getString(R.string.title_section3);    break;
+            case 3: PageTitle = mContext.getString(R.string.title_section4);    break;
+            case 4: PageTitle = mContext.getString(R.string.title_section5);    break;
+        }
+        return PageTitle;
     }
+
+    public static int getPos() {
+        return pos;
+    }
+
+    public static void setPos(int pos) {
+        PagerAdapter.pos = pos;
+    }
+
 }

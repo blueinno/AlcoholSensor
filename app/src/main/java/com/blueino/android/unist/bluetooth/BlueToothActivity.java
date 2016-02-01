@@ -13,8 +13,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.blueino.android.unist.contant.State;
+import com.blueino.android.unist.fragment.DeviceListFragment;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -73,7 +75,9 @@ public class BlueToothActivity extends AppCompatActivity implements BluetoothAda
     }
 
     protected void updateUI() {
+    }
 
+    protected void updateScan(BluetoothDevice device) {
     }
 
     //  ========================================================================================
@@ -154,6 +158,8 @@ public class BlueToothActivity extends AppCompatActivity implements BluetoothAda
                 if( bluetoothDevice != null ) {
                     if (rfduinoService.connect(bluetoothDevice.getAddress())) {
                         upgradeState(State.CONNECTING);
+                        String message = bluetoothDevice.getName() + " Connected";
+                        Toast.makeText(BlueToothActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -194,7 +200,7 @@ public class BlueToothActivity extends AppCompatActivity implements BluetoothAda
             @Override
             public void run() {
                 Log.d("rrobbie", "device info : " + BluetoothHelper.getDeviceInfoText(bluetoothDevice, rssi, scanRecord) );
-                updateUI();
+                updateScan(bluetoothDevice);
             }
         });
     }
