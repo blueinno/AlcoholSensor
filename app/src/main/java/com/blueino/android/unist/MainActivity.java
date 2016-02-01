@@ -107,6 +107,7 @@ public class MainActivity extends BlueToothActivity implements NavigationDrawerF
 
         Log.e("rrobbie", "update : " + temp + " / " + dateFormat.format(calendar.getTime()));
 
+        terminalFragment.update(data);
         graphFragment.update(data);
     }
 
