@@ -1,5 +1,6 @@
 package com.blueino.android.unist.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.blueino.android.unist.MainActivity;
 import com.blueino.android.unist.R;
 
-public class DevicesFragment extends Fragment {
+public class DevicesFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -48,33 +50,27 @@ public class DevicesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myFragmentView = inflater.inflate(R.layout.fragment_devices, container, false);
-        final Button connectButton = (Button)myFragmentView.findViewById(R.id.conn_button);
-        if(connectButton != null) {
-            connectButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-/*                    ((MainActivity) getActivity()).disconnect();
-                    Intent intent = new Intent(getActivity().getApplicationContext(), DeviceList.class);
-                    startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);*/
-                }
-            });
-        }
-/*        final Button disconnectButton = (Button) myFragmentView.findViewById(R.id.disconnectButton);
-*//*
-
-        if(!((MainActivity)getActivity()).isConnected()) {
-            disconnectButton.setVisibility(View.INVISIBLE);
-        }
-*//*
-
-        disconnectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                ((MainActivity)getActivity()).disconnect();
-                disconnectButton.setVisibility(View.INVISIBLE);
-            }
-        });*/
+        Button connectButton = (Button)myFragmentView.findViewById(R.id.connect_button);
+        connectButton.setOnClickListener(this);
         return myFragmentView;
+    }
+
+    //  =======================================================================================
+
+    @Override
+    public void onClick(View v) {
+        Button button = ((Button) v);
+        String item = button.getText().toString();
+        if( "Scan".equals(item) ) {
+            ((MainActivity)getActivity()).scan();
+            button.setText("Connect");
+        } else if( "Connect".equals(item) ) {
+            ((MainActivity)getActivity()).connect();
+            button.setText("DisConnect");
+        } else if( "DisConnect".equals(item) ) {
+            ((MainActivity)getActivity()).disConnect();
+            button.setText("Scan");
+        }
     }
 
 }

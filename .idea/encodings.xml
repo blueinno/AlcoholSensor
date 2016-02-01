@@ -14,15 +14,12 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_drawer.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/menu.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/menu2.png" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ui_logo.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/shape_circle.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_devices.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_graph.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_navigation_drawer.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_settings.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_terminal.xml" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/menu/global.xml" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/menu/main.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/xml" charset="UTF-8" />
   </component>
 </project>

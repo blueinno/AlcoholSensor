@@ -110,12 +110,14 @@
 
     <Button
         android:layout_alignParentBottom="true"
-        android:id="@+id/conn_button"
+        android:id="@+id/connect_button"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="bottom"
         android:background="#001c54"
-        android:text="Connect to device"
+        android:text="Scan"
         android:textColor="#FFFFFF" />
+
+<!--    android:text="Connect to device"-->
 
 </RelativeLayout>

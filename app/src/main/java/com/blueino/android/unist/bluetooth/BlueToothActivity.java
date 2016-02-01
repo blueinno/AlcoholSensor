@@ -45,21 +45,11 @@ public class BlueToothActivity extends AppCompatActivity implements BluetoothAda
     @Override
     protected void onStart() {
         super.onStart();
-
-        registerReceiver(scanModeReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
-        registerReceiver(bluetoothStateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
-        registerReceiver(rfduinoReceiver, RFduinoService.getIntentFilter());
-        updateState(bluetoothAdapter.isEnabled() ? State.DISCONNECTED : State.BLUETOOTH_OFF);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        bluetoothAdapter.stopLeScan(this);
-        unregisterReceiver(scanModeReceiver);
-        unregisterReceiver(bluetoothStateReceiver);
-        unregisterReceiver(rfduinoReceiver);
     }
 
     //  ========================================================================================
@@ -88,14 +78,28 @@ public class BlueToothActivity extends AppCompatActivity implements BluetoothAda
 
     //  ========================================================================================
 
-    protected void scan() {
+    public void scan() {
         scanStarted = true;
+        registerReceiver(scanModeReceiver, new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED));
+        registerReceiver(bluetoothStateReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+        registerReceiver(rfduinoReceiver, RFduinoService.getIntentFilter());
+        updateState(bluetoothAdapter.isEnabled() ? State.DISCONNECTED : State.BLUETOOTH_OFF);
         bluetoothAdapter.startLeScan(new UUID[]{ RFduinoService.UUID_SERVICE }, this);
     }
 
     public void connect() {
         Intent rfduinoIntent = new Intent(this, RFduinoService.class);
         bindService(rfduinoIntent, rfduinoServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    public void disConnect() {
+        bluetoothAdapter.stopLeScan(this);
+
+        if( rfduinoReceiver != null ) {
+            unregisterReceiver(scanModeReceiver);
+            unregisterReceiver(bluetoothStateReceiver);
+            unregisterReceiver(rfduinoReceiver);
+        }
     }
 
     //  ========================================================================================
@@ -147,8 +151,10 @@ public class BlueToothActivity extends AppCompatActivity implements BluetoothAda
         public void onServiceConnected(ComponentName name, IBinder service) {
             rfduinoService = ((RFduinoService.LocalBinder) service).getService();
             if (rfduinoService.initialize()) {
-                if (rfduinoService.connect(bluetoothDevice.getAddress())) {
-                    upgradeState(State.CONNECTING);
+                if( bluetoothDevice != null ) {
+                    if (rfduinoService.connect(bluetoothDevice.getAddress())) {
+                        upgradeState(State.CONNECTING);
+                    }
                 }
             }
         }
@@ -164,7 +170,6 @@ public class BlueToothActivity extends AppCompatActivity implements BluetoothAda
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            Log.e("rrobbie", "rfduinoReceiver : " + action);
 
             if (RFduinoService.ACTION_CONNECTED.equals(action)) {
                 upgradeState(State.CONNECTED);
@@ -182,6 +187,8 @@ public class BlueToothActivity extends AppCompatActivity implements BluetoothAda
     public void onLeScan(BluetoothDevice device, final int rssi, final byte[] scanRecord) {
         bluetoothAdapter.stopLeScan(this);
         bluetoothDevice = device;
+
+        Log.e("rrobbie", "onLeScan : " + bluetoothDevice  );
 
         this.runOnUiThread(new Runnable() {
             @Override
