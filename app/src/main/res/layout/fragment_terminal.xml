@@ -1,15 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.lukas.androidbluetooth.TerminalFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:weightSum="100"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <LinearLayout
             android:background="#FFFFFF"
@@ -98,20 +95,23 @@
             android:id="@+id/terminal_top"
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
         <TextView
             android:textSize="15dp"
             android:paddingLeft="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="500 ~ 1000 : suspension of license"/>
-        <TextView
+            android:text="500 ~ 1000 : suspension of license" />
+
+            <TextView
             android:layout_marginTop="5dp"
             android:textSize="15dp"
             android:paddingLeft="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1000 ~  : revocation of license"/>
+                android:text="1000 ~  : revocation of license" />
         </LinearLayout>
+
         <LinearLayout
             android:background="#FFFFFF"
             android:layout_weight="5"
@@ -125,22 +125,15 @@
                 android:layout_height="match_parent"
                 android:text="To make a logfile, push the button below"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_weight="5"
-            android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:textColor="#FFFFFF"
-                android:background="#002884"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Start Logging"
-                android:id="@+id/logButton"
-                android:layout_gravity="left|bottom" />
-        </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/logButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#002884"
+        android:text="Start Logging"
+        android:textColor="#FFFFFF" />
 
-
-</FrameLayout>
+</RelativeLayout>

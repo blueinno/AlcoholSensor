@@ -1,22 +1,23 @@
 package com.blueino.android.unist;
 
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.blueino.android.unist.adapter.PagerAdapter;
 import com.blueino.android.unist.bluetooth.BlueToothActivity;
 import com.blueino.android.unist.component.NonViewPager;
-import com.blueino.android.unist.fragment.DeviceListFragment;
 import com.blueino.android.unist.fragment.DeviceFragment;
+import com.blueino.android.unist.fragment.DeviceListFragment;
 import com.blueino.android.unist.fragment.GraphFragment;
 import com.blueino.android.unist.fragment.NavigationDrawerFragment;
 import com.blueino.android.unist.fragment.SettingsFragment;
 import com.blueino.android.unist.fragment.TerminalFragment;
+import com.blueino.android.unist.util.PreferenceUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -40,20 +41,6 @@ public class MainActivity extends BlueToothActivity implements NavigationDrawerF
     private TerminalFragment terminalFragment;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void createChidren() {
         super.createChidren();
         setContentView(R.layout.activity_main);
@@ -69,6 +56,7 @@ public class MainActivity extends BlueToothActivity implements NavigationDrawerF
     protected void setProperties() {
         super.setProperties();
 
+        mToolbar.setTitle(getString(R.string.app_name));
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, mDrawerLayout, mToolbar);
 
         deviceListFragment = new DeviceListFragment();
@@ -79,8 +67,8 @@ public class MainActivity extends BlueToothActivity implements NavigationDrawerF
 
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add( deviceFragment );
+        fragments.add(settingsFragment);
         fragments.add( graphFragment );
-        fragments.add( settingsFragment );
         fragments.add( terminalFragment );
         fragments.add( deviceListFragment );
 
@@ -105,8 +93,6 @@ public class MainActivity extends BlueToothActivity implements NavigationDrawerF
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        Log.e("rrobbie", "update : " + temp + " / " + dateFormat.format(calendar.getTime()));
-
         terminalFragment.update(data);
         graphFragment.update(data);
     }
@@ -127,10 +113,31 @@ public class MainActivity extends BlueToothActivity implements NavigationDrawerF
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         if( mViewPager != null ) {
+            Log.d("rrobbie", "onNavigationDrawerItemSelected : " + position);
             mViewPager.setCurrentItem(position);
         }
     }
 
     //  =========================================================================================
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PreferenceUtil.REQUEST_GRAPH) {
+                String min = PreferenceUtil.get(this, PreferenceUtil.PREFERENCE_MIN_Y_SCALE);
+                String max = PreferenceUtil.get(this, PreferenceUtil.PREFERENCE_MAX_Y_SCALE);
+
+                if( min != null && max != null ) {
+                    graphFragment.setMinMax( Integer.valueOf(min), Integer.valueOf(max) );
+                } else {
+                    Toast.makeText(this, "min or max is invalid value", Toast.LENGTH_SHORT).show();
+                }
+            } else if (requestCode == PreferenceUtil.REQUEST_TERMINAL) {
+
+            }
+        }
+    }
 }

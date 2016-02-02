@@ -1,21 +1,13 @@
 package com.blueino.android.unist.fragment;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.blueino.android.unist.R;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -31,8 +23,6 @@ public class GraphFragment extends BaseFragment {
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
     private int lastX = 0;
-
-    private Viewport viewport;
 
     public GraphFragment() {
     }
@@ -78,6 +68,12 @@ public class GraphFragment extends BaseFragment {
         }).start();
     }
 
+    public void setMinMax(int min, int max) {
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(min);
+        graph.getViewport().setMaxY(max);
+    }
+
     //  ===========================================================================================
 
     private void initialize() {
@@ -86,15 +82,12 @@ public class GraphFragment extends BaseFragment {
 
     private void createChildren() {
         graph = (GraphView) myFragmentView.findViewById(R.id.graphView);
-
         series = new LineGraphSeries<DataPoint>();
         graph.addSeries(series);
-        // customize a little bit viewport
-        viewport = graph.getViewport();
-        viewport.setYAxisBoundsManual(true);
-        viewport.setScrollable(true);
-        viewport.setMinY(0);
-        viewport.setMaxY(1000);
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setScrollable(true);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(500);
 
 //        draw();
     }

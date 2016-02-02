@@ -9,59 +9,42 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.blueino.android.unist.R;
+import com.blueino.android.unist.manager.TextFileManager;
+import com.blueino.android.unist.util.PreferenceUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
-public class TerminalFragment extends BaseFragment {
+public class TerminalFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView top_text;
     private View mFragmentView;
-
-    TextView arg_1;
-    TextView ppm;
-    TextView conc;
     private TextView terminal;
-    private boolean isLogging = false;
+    private Button logButton;
+
+    private StringBuilder logBuilder;
+    private boolean isLoging = false;
 
     public TerminalFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-        }
+        logBuilder = new StringBuilder();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mFragmentView = inflater.inflate(R.layout.fragment_terminal, container, false);
         terminal = (TextView)mFragmentView.findViewById(R.id.terminalTextView);
-        final Button button = (Button)mFragmentView.findViewById(R.id.logButton);
-        conc = (TextView)mFragmentView.findViewById(R.id.text_conc);
-        ppm = (TextView)mFragmentView.findViewById(R.id.ppm_text);
-        arg_1 = (TextView)mFragmentView.findViewById(R.id.arg_1);
+        logButton = (Button) mFragmentView.findViewById(R.id.logButton);
+        logButton.setOnClickListener(this);
         top_text = (TextView)mFragmentView.findViewById(R.id.top_text);
-
-        if(isLogging){
-            button.setText("Stop Logging");
-        }else{
-            button.setText("Start Logging");
-        }
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(!isLogging) {
-
-                }else{
-                }
-            }
-        });
         return mFragmentView;
     }
 
@@ -76,16 +59,44 @@ public class TerminalFragment extends BaseFragment {
     //  ========================================================================================
 
     public void updateText(String text){
-        int A = Integer.parseInt(text);
+        int max = Integer.parseInt(text);
 
-        if(A>300){
+        String limit = PreferenceUtil.get(getActivity(), PreferenceUtil.PREFERENCE_MAX_Y_SCALE);
+
+        if( limit == null )
+            limit = "300";
+
+        if (max > Integer.valueOf(limit) ) {
             top_text.setTextColor(Color.rgb(204, 61, 61));
             top_text.setText("You should not drive");
         }else{
-             top_text.setTextColor(Color.rgb(71, 200, 62));
+            top_text.setTextColor(Color.rgb(71, 200, 62));
             top_text.setText("You may drive");
         }
         terminal.setText(text);
+
+        if( isLoging ) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time = dateFormat.format(new Date());
+            logBuilder.append( text + " , " + time );
+        }
     }
+
+    //  =======================================================================================
+
+    @Override
+    public void onClick(View v) {
+        if (isLoging) {
+            logButton.setText("Stop Logging");
+            isLoging = true;
+        } else {
+            logButton.setText("Start Logging");
+            isLoging = false;
+            TextFileManager manager = new TextFileManager(getActivity());
+            manager.save(logBuilder.toString());
+        }
+    }
+
+
 
 }

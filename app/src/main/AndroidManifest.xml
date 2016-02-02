@@ -25,6 +25,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.GraphSettingActivity"
+            android:label="@string/title_section3" >
+        </activity>
+
+        <activity
+            android:name=".activity.TerminalSettingActivity"
+            android:label="@string/title_section4" >
+        </activity>
+
         <service android:name=".bluetooth.RFduinoService" android:enabled="true"/>
 
     </application>

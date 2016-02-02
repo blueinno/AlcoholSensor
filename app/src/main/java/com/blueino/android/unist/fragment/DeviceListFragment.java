@@ -62,8 +62,6 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
             return;
 
         if( !map.containsKey(data.getAddress()) ) {
-            Log.e("rrobbie", data.getName());
-            Log.e("rrobbie", data.getAddress());
             String item = data.getName() + "\n" + data.getAddress();
             map.put(data.getAddress(), data);
             adapter.add(item);
@@ -84,7 +82,6 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
         String message = device.getName() + "에 연결을 시도합니다.";
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 */
-
         ((MainActivity)getActivity()).connect();
     }
 
