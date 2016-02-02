@@ -24,6 +24,18 @@ public class GraphSettingActivity extends AppCompatActivity {
 
         if( getSupportActionBar() != null )
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        String max = PreferenceUtil.get(this, PreferenceUtil.PREFERENCE_MAX_Y_SCALE);
+        String min = PreferenceUtil.get(this, PreferenceUtil.PREFERENCE_MIN_Y_SCALE);
+
+        if( max == null )
+            max = "300";
+
+        if( min == null )
+            min = "0";
+
+        maxEditText.setText( max );
+        minEditText.setText( min );
     }
 
     @Override

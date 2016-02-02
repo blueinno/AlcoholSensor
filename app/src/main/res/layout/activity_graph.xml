@@ -151,6 +151,7 @@
         </LinearLayout>
 
         <EditText
+            android:inputType="number"
             android:id="@+id/maxEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -193,6 +194,7 @@
         </LinearLayout>
 
         <EditText
+            android:inputType="number"
             android:id="@+id/minEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

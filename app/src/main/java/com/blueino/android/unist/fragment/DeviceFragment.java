@@ -12,16 +12,6 @@ import com.blueino.android.unist.R;
 
 public class DeviceFragment extends Fragment implements View.OnClickListener {
 
-    public DeviceFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myFragmentView = inflater.inflate(R.layout.fragment_devices, container, false);

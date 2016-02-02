@@ -2,11 +2,13 @@ package com.blueino.android.unist.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blueino.android.unist.R;
 import com.blueino.android.unist.manager.TextFileManager;
@@ -27,9 +29,6 @@ public class TerminalFragment extends BaseFragment implements View.OnClickListen
 
     private StringBuilder logBuilder;
     private boolean isLoging = false;
-
-    public TerminalFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,14 +85,18 @@ public class TerminalFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (isLoging) {
+        if (!isLoging) {
             logButton.setText("Stop Logging");
             isLoging = true;
         } else {
             logButton.setText("Start Logging");
             isLoging = false;
             TextFileManager manager = new TextFileManager(getActivity());
-            manager.save(logBuilder.toString());
+            manager.save(logBuilder.toString() + "\n");
+            Toast.makeText(getActivity(), "unist_log file saved", Toast.LENGTH_SHORT).show();
+
+            Log.e("rrobbie", manager.load()  );
+
         }
     }
 

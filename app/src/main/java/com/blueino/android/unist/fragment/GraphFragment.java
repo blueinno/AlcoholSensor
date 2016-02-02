@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blueino.android.unist.R;
+import com.blueino.android.unist.util.PreferenceUtil;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -22,25 +24,8 @@ public class GraphFragment extends BaseFragment {
 
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
+    private Viewport viewport;
     private int lastX = 0;
-
-    public GraphFragment() {
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        boolean isNull = graph==null;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,9 +54,14 @@ public class GraphFragment extends BaseFragment {
     }
 
     public void setMinMax(int min, int max) {
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(min);
-        graph.getViewport().setMaxY(max);
+        graph.removeAllSeries();
+        series = new LineGraphSeries<DataPoint>();
+        graph.addSeries(series);
+        viewport = graph.getViewport();
+        viewport.setYAxisBoundsManual(true);
+        viewport.setScrollable(true);
+        viewport.setMaxY(max);
+        viewport.setMinY(min);
     }
 
     //  ===========================================================================================
@@ -84,10 +74,21 @@ public class GraphFragment extends BaseFragment {
         graph = (GraphView) myFragmentView.findViewById(R.id.graphView);
         series = new LineGraphSeries<DataPoint>();
         graph.addSeries(series);
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setScrollable(true);
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(500);
+        viewport = graph.getViewport();
+        viewport.setYAxisBoundsManual(true);
+        viewport.setScrollable(true);
+
+        String max = PreferenceUtil.get(getActivity(), PreferenceUtil.PREFERENCE_MAX_Y_SCALE);
+        String min = PreferenceUtil.get(getActivity(), PreferenceUtil.PREFERENCE_MIN_Y_SCALE);
+
+        if( max == null )
+            max = "300";
+
+        if( min == null )
+            min = "0";
+
+        viewport.setMaxY(Integer.valueOf(max));
+        viewport.setMinY(Integer.valueOf(min));
 
 //        draw();
     }

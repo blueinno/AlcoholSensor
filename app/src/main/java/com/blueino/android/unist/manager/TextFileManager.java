@@ -1,6 +1,9 @@
 package com.blueino.android.unist.manager;
 
 import android.content.Context;
+import android.os.Environment;
+
+import com.blueino.android.unist.R;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,6 +25,7 @@ public class TextFileManager {
         FileOutputStream stream = null;
 
         try {
+//            Environment.getExternalStorageDirectory()+"/" + mContext.getString(R.string.app_name) + "/" + FILE_NAME;
             stream = mContext.openFileOutput(FILE_NAME, Context.MODE_APPEND);
             stream.write( data.getBytes() );
             stream.close();
