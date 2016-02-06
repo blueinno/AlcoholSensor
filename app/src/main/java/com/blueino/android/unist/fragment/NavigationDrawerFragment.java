@@ -120,10 +120,6 @@ public class NavigationDrawerFragment extends Fragment {
             }
         };
 
-        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-            mDrawerLayout.openDrawer(mFragmentContainerView);
-        }
-
         mDrawerLayout.post(new Runnable() {
             @Override
             public void run() {

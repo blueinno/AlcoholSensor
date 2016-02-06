@@ -26,6 +26,7 @@ public class GraphFragment extends BaseFragment {
     private LineGraphSeries<DataPoint> series;
     private Viewport viewport;
     private int lastX = 0;
+    private int xValue = 60;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +45,6 @@ public class GraphFragment extends BaseFragment {
                         @Override
                         public void run() {
                             Float f = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-//                            String temp = String.format("%", d);
                             addEntry( f );
                         }
                     });
@@ -59,7 +59,9 @@ public class GraphFragment extends BaseFragment {
         graph.addSeries(series);
         viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
-        viewport.setScrollable(true);
+        viewport.setXAxisBoundsManual(true);
+        viewport.setMinX(0);
+        viewport.setMaxX(xValue);
         viewport.setMaxY(max);
         viewport.setMinY(min);
     }
@@ -76,12 +78,14 @@ public class GraphFragment extends BaseFragment {
         graph.addSeries(series);
         viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
-        viewport.setScrollable(true);
+        viewport.setXAxisBoundsManual(true);
+        viewport.setMinX(0);
+        viewport.setMaxX(xValue);
 
         String max = PreferenceUtil.get(getActivity(), PreferenceUtil.PREFERENCE_MAX_Y_SCALE);
         String min = PreferenceUtil.get(getActivity(), PreferenceUtil.PREFERENCE_MIN_Y_SCALE);
 
-        if( max == null )
+        if (max == null)
             max = "300";
 
         if( min == null )
@@ -89,7 +93,6 @@ public class GraphFragment extends BaseFragment {
 
         viewport.setMaxY(Integer.valueOf(max));
         viewport.setMinY(Integer.valueOf(min));
-
 //        draw();
     }
 
@@ -97,17 +100,17 @@ public class GraphFragment extends BaseFragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 10000; i++) {
                     if( getActivity() != null ) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-//                                addEntry();
+                                addEntry(100);
                             }
                         });
 
                         try {
-                            Thread.sleep(600);
+                            Thread.sleep(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -118,27 +121,7 @@ public class GraphFragment extends BaseFragment {
     }
 
     private void addEntry(double value) {
-        series.appendData(new DataPoint(lastX++, value), true, 10);
+        series.appendData(new DataPoint(lastX++, value), false, xValue);
     }
-
-    private int getColor(int ctr){
-        switch(ctr){
-            case 0:
-                return Color.BLUE;
-            case 1:
-                return Color.RED;
-            case 2:
-                return Color.GREEN;
-            case 3:
-                return Color.YELLOW;
-            case 4:
-                return Color.CYAN;
-            case 5:
-                return 0xffbb33;
-            default:
-                return Color.MAGENTA;
-        }
-    }
-
 
 }

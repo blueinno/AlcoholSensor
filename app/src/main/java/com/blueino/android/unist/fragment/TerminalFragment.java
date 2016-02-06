@@ -2,6 +2,7 @@ package com.blueino.android.unist.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +15,13 @@ import com.blueino.android.unist.R;
 import com.blueino.android.unist.manager.TextFileManager;
 import com.blueino.android.unist.util.PreferenceUtil;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class TerminalFragment extends BaseFragment implements View.OnClickListener {
 
@@ -52,7 +55,31 @@ public class TerminalFragment extends BaseFragment implements View.OnClickListen
         super.update(data);
         Float f = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).getFloat();
         int value = f.intValue();
-        updateText( String.valueOf(value) );
+        updateText(String.valueOf(value));
+    }
+
+    private void draw() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10000; i++) {
+                    if( getActivity() != null ) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateText( String.valueOf(getRandom()) );
+                            }
+                        });
+
+                        try {
+                            Thread.sleep(600);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }).start();
     }
 
     //  ========================================================================================
@@ -88,6 +115,7 @@ public class TerminalFragment extends BaseFragment implements View.OnClickListen
         if (!isLoging) {
             logButton.setText("Stop Logging");
             isLoging = true;
+//            draw();
         } else {
             logButton.setText("Start Logging");
             isLoging = false;
@@ -100,6 +128,44 @@ public class TerminalFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
+
+    //  ========================================================================================
+
+    int mLastRandom = 2;
+    Random mRand = new Random();
+    private int getRandom() {
+        return mLastRandom += mRand.nextInt()*0.5 - 0.25;
+    }
+
+    //  ========================================================================================
+
+    public File getStorageDir( String albumName){
+        File file = new File( Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES), albumName);
+        if( !file.mkdir()){
+            Log.e( "rrobbie", "Directory not created");
+        }
+
+        return file;
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
 
 
 }
