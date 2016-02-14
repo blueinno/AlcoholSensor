@@ -68,8 +68,8 @@ public class MainActivity extends BlueToothActivity implements NavigationDrawerF
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add( deviceFragment );
         fragments.add(settingsFragment);
-        fragments.add( graphFragment );
-        fragments.add( terminalFragment );
+        fragments.add(graphFragment);
+        fragments.add(terminalFragment);
         fragments.add( deviceListFragment );
 
         mPagerAdapter = new PagerAdapter(this, getSupportFragmentManager(), fragments);
@@ -77,13 +77,31 @@ public class MainActivity extends BlueToothActivity implements NavigationDrawerF
         mViewPager.setAdapter(mPagerAdapter);
     }
 
+    @Override
+    public void onBackPressed() {
+        if( mViewPager.getCurrentItem() != 0 ) {
+            setCurrentItem(0);
+            return;
+        }
+        super.onBackPressed();
+    }
+
     //  =======================================================================================
 
     public void setCurrentItem(int position) {
         mViewPager.setCurrentItem(position);
+
+
     }
 
     //  =======================================================================================
+
+
+    @Override
+    public void connect() {
+        super.connect();
+        setCurrentItem(3);
+    }
 
     @Override
     protected void update(byte[] data) {
@@ -113,8 +131,7 @@ public class MainActivity extends BlueToothActivity implements NavigationDrawerF
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         if( mViewPager != null ) {
-            Log.d("rrobbie", "onNavigationDrawerItemSelected : " + position);
-            mViewPager.setCurrentItem(position);
+            setCurrentItem(position);
         }
     }
 

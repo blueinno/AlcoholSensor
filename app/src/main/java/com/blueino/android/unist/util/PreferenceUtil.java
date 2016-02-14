@@ -22,6 +22,9 @@ public class PreferenceUtil {
 
     public static String get(Context context,String key) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_NAME, context.MODE_PRIVATE);
+        if( prefs == null )
+            return null;
+
         return prefs.getString(key, null);
     }
 

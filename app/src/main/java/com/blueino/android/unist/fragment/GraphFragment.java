@@ -2,6 +2,7 @@ package com.blueino.android.unist.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,11 +60,12 @@ public class GraphFragment extends BaseFragment {
         graph.addSeries(series);
         viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
-        viewport.setXAxisBoundsManual(true);
-        viewport.setMinX(0);
-        viewport.setMaxX(xValue);
         viewport.setMaxY(max);
         viewport.setMinY(min);
+
+        Log.e("rrobbie", "set min max");
+
+
     }
 
     //  ===========================================================================================
@@ -78,9 +80,8 @@ public class GraphFragment extends BaseFragment {
         graph.addSeries(series);
         viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
-        viewport.setXAxisBoundsManual(true);
-        viewport.setMinX(0);
-        viewport.setMaxX(xValue);
+        graph.onDataChanged(false, false);
+        graph.getViewport().setScrollable(true);
 
         String max = PreferenceUtil.get(getActivity(), PreferenceUtil.PREFERENCE_MAX_Y_SCALE);
         String min = PreferenceUtil.get(getActivity(), PreferenceUtil.PREFERENCE_MIN_Y_SCALE);
@@ -93,7 +94,6 @@ public class GraphFragment extends BaseFragment {
 
         viewport.setMaxY(Integer.valueOf(max));
         viewport.setMinY(Integer.valueOf(min));
-//        draw();
     }
 
     private void draw() {

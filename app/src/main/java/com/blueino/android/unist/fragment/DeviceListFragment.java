@@ -72,6 +72,7 @@ public class DeviceListFragment extends Fragment implements View.OnClickListener
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 */
         ((MainActivity)getActivity()).connect();
+
     }
 
 }
