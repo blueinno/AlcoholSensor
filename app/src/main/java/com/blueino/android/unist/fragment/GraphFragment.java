@@ -27,7 +27,7 @@ public class GraphFragment extends BaseFragment {
     private LineGraphSeries<DataPoint> series;
     private Viewport viewport;
     private int lastX = 0;
-    private int xValue = 60;
+    private int xValue = 180;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,8 +64,6 @@ public class GraphFragment extends BaseFragment {
         viewport.setMinY(min);
 
         Log.e("rrobbie", "set min max");
-
-
     }
 
     //  ===========================================================================================
@@ -94,6 +92,8 @@ public class GraphFragment extends BaseFragment {
 
         viewport.setMaxY(Integer.valueOf(max));
         viewport.setMinY(Integer.valueOf(min));
+
+//        draw();
     }
 
     private void draw() {
@@ -121,7 +121,7 @@ public class GraphFragment extends BaseFragment {
     }
 
     private void addEntry(double value) {
-        series.appendData(new DataPoint(lastX++, value), false, xValue);
+        series.appendData(new DataPoint(lastX++, value), false, lastX);
     }
 
 }
